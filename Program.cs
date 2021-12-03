@@ -7,6 +7,7 @@ namespace ADO.netAddressBook
         static void Main(string[] args)
         {
             Console.WriteLine("Welccome To ADO.netAddressBook");
+            AddressBookService addressBook = new AddressBookService();
         }
     }
 }
