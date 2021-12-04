@@ -92,5 +92,32 @@ namespace ADO.netAddressBook
                this.sqlConnection.Close();
             }
         }
+
+        public void EditContact()
+        {
+            try
+            {
+                this.sqlConnection.Open();
+                string query = @"Update addresstable set Address = 'NGO Colony' where FirstName='Praveen'";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        Console.WriteLine("Updated");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not Updated");
+                    }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
     }
 }
