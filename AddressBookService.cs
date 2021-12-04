@@ -64,7 +64,7 @@ namespace ADO.netAddressBook
             contact.PhoneNumber = Convert.ToDouble(reader["PhoneNumber"]);
             contact.Email = Convert.ToString(reader["Email"]);
 
-            Console.WriteLine("\nRetrived Datas: \n{0},{1},{2},{3},{4},{5},{6},{7}", contact.FirstName, contact.LastName, contact.Address, contact.City, contact.State, contact.Zip, contact.PhoneNumber, contact.Email);
+            Console.WriteLine("\n{0},{1},{2},{3},{4},{5},{6},{7}", contact.FirstName, contact.LastName, contact.Address, contact.City, contact.State, contact.Zip, contact.PhoneNumber, contact.Email);
         }
 
         //Insert New Contact
@@ -207,6 +207,35 @@ namespace ADO.netAddressBook
                     {
                         Console.WriteLine("{0} \t {1} \t {2}", reader[0], reader[1], reader[2]);
                         nameList += reader[0].ToString() + " ";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+
+        public void SortPersonByCity()
+        {
+            try
+            {
+                string nameList = "";
+                this.sqlConnection.Open();
+                string query = @"select * from addresstable order by City,FirstName";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        DisplayContact(reader);
+                        nameList += reader["FirstName"].ToString() + " ";
                     }
                 }
             }
