@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace ADO.netAddressBook
 {
@@ -48,6 +49,47 @@ namespace ADO.netAddressBook
             finally
             {
                 this.sqlConnection.Close();
+            }
+        }
+
+        //Insert New Contact
+        public void InsertNewContact(Contact contact)
+        {
+            try
+            {
+                using (this.sqlConnection)
+                {
+                    SqlCommand command = new SqlCommand("dbo.spAddAddressBookDetails", this.sqlConnection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@FirstName", contact.FirstName);
+                    command.Parameters.AddWithValue("@LastName", contact.LastName);
+                    command.Parameters.AddWithValue("@Address", contact.Address);
+                    command.Parameters.AddWithValue("@City", contact.City);
+                    command.Parameters.AddWithValue("@States", contact.State);
+                    command.Parameters.AddWithValue("@Zip", contact.Zip);
+                    command.Parameters.AddWithValue("@PhoneNumber", contact.PhoneNumber);
+                    command.Parameters.AddWithValue("@Email", contact.Email);
+
+                    this.sqlConnection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result == 0)
+                    {
+                        Console.WriteLine("No Data Added");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Employee Data Added");
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+               this.sqlConnection.Close();
             }
         }
     }
