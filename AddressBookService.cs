@@ -52,6 +52,21 @@ namespace ADO.netAddressBook
             }
         }
 
+        public void DisplayContact(SqlDataReader reader)
+        {
+            Contact contact = new Contact();
+            contact.FirstName = Convert.ToString(reader["FirstName"]);
+            contact.LastName = Convert.ToString(reader["LastName"]);
+            contact.Address = Convert.ToString(reader["Address"]);
+            contact.City = Convert.ToString(reader["City"]);
+            contact.State = Convert.ToString(reader["States"]);
+            contact.Zip = Convert.ToDouble(reader["Zip"]);
+            contact.PhoneNumber = Convert.ToDouble(reader["PhoneNumber"]);
+            contact.Email = Convert.ToString(reader["Email"]);
+
+            Console.WriteLine("\nRetrived Datas: \n{0},{1},{2},{3},{4},{5},{6},{7}", contact.FirstName, contact.LastName, contact.Address, contact.City, contact.State, contact.Zip, contact.PhoneNumber, contact.Email);
+        }
+
         //Insert New Contact
         public void InsertNewContact(Contact contact)
         {
@@ -135,6 +150,35 @@ namespace ADO.netAddressBook
                 else
                 {
                     Console.WriteLine("Not Deleted");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+
+        public void RetrivePerson()
+        {
+            try
+            {
+                string nameList = "";
+                this.sqlConnection.Open();
+                string query = @"select * from addresstable where City='Chennai' or States='Tamil Nadu' ";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        DisplayContact(reader);
+                        nameList += reader["FirstName"].ToString() + " ";
+                    }
                 }
             }
             catch (Exception ex)
