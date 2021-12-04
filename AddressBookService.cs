@@ -190,5 +190,34 @@ namespace ADO.netAddressBook
                 this.sqlConnection.Close();
             }
         }
+
+        public void SizeOfCityState()
+        {
+            try
+            {
+                string nameList = "";
+                this.sqlConnection.Open();
+                string query = @"select Count(*),States,City from addresstable Group by States,City";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine("{0} \t {1} \t {2}", reader[0], reader[1], reader[2]);
+                        nameList += reader[0].ToString() + " ";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
     }
 }
