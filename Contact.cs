@@ -16,5 +16,6 @@ namespace ADO.netAddressBook
         public double Zip { get; set; }
         public double PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string Type { get; set; }
     }
 }

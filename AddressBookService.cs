@@ -37,8 +37,9 @@ namespace ADO.netAddressBook
                         contact.Zip = Convert.ToDouble(reader["Zip"] == DBNull.Value ? default : reader["Zip"]);
                         contact.PhoneNumber = Convert.ToDouble(reader["PhoneNumber"] == DBNull.Value ? default : reader["PhoneNumber"]);
                         contact.Email = Convert.ToString(reader["Email"] == DBNull.Value ? default : reader["Email"]);
+                        contact.Type = Convert.ToString(reader["Type"] == DBNull.Value ? default : reader["Type"]);
 
-                        Console.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}", contact.FirstName, contact.LastName, contact.Address, contact.City, contact.State, contact.Zip, contact.PhoneNumber, contact.Email);
+                        Console.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", contact.FirstName, contact.LastName, contact.Address, contact.City, contact.State, contact.Zip, contact.PhoneNumber, contact.Email,contact.Type);
                     }
                 }
             }
@@ -236,6 +237,35 @@ namespace ADO.netAddressBook
                     {
                         DisplayContact(reader);
                         nameList += reader["FirstName"].ToString() + " ";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+
+        public void PersonType()
+        {
+            try
+            {
+                string nameList = "";
+                this.sqlConnection.Open();
+                string query = @"select Count(*) as NumberOfContacts from addresstable Group by type";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Console.WriteLine("{0} \t {1}", reader[0], reader[1]);
+                        nameList += reader[0].ToString() + " ";
                     }
                 }
             }
