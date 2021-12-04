@@ -119,5 +119,32 @@ namespace ADO.netAddressBook
                 this.sqlConnection.Close();
             }
         }
+
+        public void DeleteContact()
+        {
+            try
+            {
+                this.sqlConnection.Open();
+                string query = @"delete from addresstable where FirstName='Praveen'";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                int result = sqlCommand.ExecuteNonQuery();
+                if (result != 0)
+                {
+                    Console.WriteLine("Deleted");
+                }
+                else
+                {
+                    Console.WriteLine("Not Deleted");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
     }
 }
